@@ -15,12 +15,12 @@ import lombok.Setter;
 public class UserSalary {
 
     private long userId;
-    private String month;
+    private MonthEnum month;
     private int salary;
     private int premium;
     private int resultSalary;
 
-    public UserSalary(final long userId, final String month, final int salary, final int premium, final int resultSalary) {
+    public UserSalary(final long userId, final MonthEnum month, final int salary, final int premium, final int resultSalary) {
         this.userId = userId;
         this.month = month;
         this.salary = salary;

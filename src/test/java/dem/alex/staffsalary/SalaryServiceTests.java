@@ -1,6 +1,7 @@
 package dem.alex.staffsalary;
 
 import dem.alex.staffsalary.dtoes.CountSalaryDto;
+import dem.alex.staffsalary.models.MonthEnum;
 import dem.alex.staffsalary.models.User;
 import dem.alex.staffsalary.models.UserSalary;
 import dem.alex.staffsalary.services.SalaryService;
@@ -29,7 +30,7 @@ public class SalaryServiceTests {
 	@Test
 	public void contSalaryTest() {
 		when(userService.getUserById(anyLong())).thenReturn(user);
-		CountSalaryDto dto = new CountSalaryDto(user.getId(), "match", 1, 2);
+		CountSalaryDto dto = new CountSalaryDto(user.getId(), MonthEnum.MARCH, 1, 2);
 		UserSalary userSalary = salaryService.countSalary(dto);
 		Assertions.assertEquals(userSalary.getSalary(),30_000);
 		Assertions.assertEquals(userSalary.getPremium(),3_000);
@@ -39,11 +40,21 @@ public class SalaryServiceTests {
 	@Test
 	public void contSalaryWithoutPremiumTest() {
 		when(userService.getUserById(anyLong())).thenReturn(user);
-		CountSalaryDto dto = new CountSalaryDto(user.getId(), "match", 2, 0);
+		CountSalaryDto dto = new CountSalaryDto(user.getId(), MonthEnum.MARCH, 2, 0);
 		UserSalary userSalary = salaryService.countSalary(dto);
 		Assertions.assertEquals(userSalary.getSalary(),30_000);
 		Assertions.assertEquals(userSalary.getPremium(),0);
 		Assertions.assertEquals(userSalary.getResultSalary(),27_274);
+	}
+
+	@Test
+	public void contSalarySeveralTimeTest() {
+		when(userService.getUserById(anyLong())).thenReturn(user);
+		salaryService.countSalary(new CountSalaryDto(user.getId(), MonthEnum.MARCH, 2, 0));
+		UserSalary userSalary = salaryService.countSalary(new CountSalaryDto(user.getId(), MonthEnum.MARCH, 1, 0));
+		Assertions.assertEquals(userSalary.getSalary(),30_000);
+		Assertions.assertEquals(userSalary.getPremium(),3_000);
+		Assertions.assertEquals(userSalary.getResultSalary(),31_637);
 	}
 
 }
