@@ -1,5 +1,6 @@
 package dem.alex.staffsalary.controllers;
 
+import dem.alex.staffsalary.models.MonthEnum;
 import dem.alex.staffsalary.models.User;
 import dem.alex.staffsalary.services.UserService;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,11 @@ public class UserController {
     @GetMapping("{id}")
     public User getUserById(@PathVariable("id") final Long userId) {
         return userService.getUserById(userId);
+    }
+
+    @GetMapping("months")
+    public MonthEnum[] getMonthList() {
+        return MonthEnum.values();
     }
 
 }
